@@ -55,10 +55,14 @@ def get_contact():
 @app.route('/group', methods=['GET'])
 def get_group():
 
-    # group = Group.query.all()
+    group = Group.query.all()
+    result=list(map(lambda item: item.serialize(),group))
+
+    print(result)
 
     response_body = {
-        "msg": "Hello, this is your GET /group response "
+        "msg": "Hello, this is your GET /group response ",
+        "groups": result
     }
 
     return jsonify(response_body), 200

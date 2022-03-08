@@ -2,6 +2,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+groups = db.Table('groups',
+    db.Column('group_id', db.Integer, db.ForeignKey('group.id'), primary_key=True),
+    db.Column('contact_id', db.Integer, db.ForeignKey('contact.id'), primary_key=True)
+)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -24,6 +29,7 @@ class Contact(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     address = db.Column(db.String(80), unique=False, nullable=False)
     phone = db.Column(db.String(80), unique=False, nullable=False)
+    groups = db.relationship('Group', secondary=groups, lazy='subquery')
     # groups = db.Column(db.Integer, foreing_key) averiguar como hacer m:m
 
     def __repr__(self):
@@ -42,7 +48,7 @@ class Contact(db.Model):
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.String(80), unique=True, nullable=False)
-    contacts = db.Column(db.String(350), unique=False, nullable=False)
+    contacts = db.relationship('Contact', secondary=groups, lazy='subquery')
     # contacts = db.Column(db.Integer, foreing_key) averiguar como hacer m:m
 
     def __repr__(self):
@@ -51,6 +57,5 @@ class Group(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "group_name": self.group_name,
-            "contacts": self.contacts
+            "group_name": self.group_name
         }
