@@ -39,6 +39,7 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
+# Get all contact
 @app.route('/contact', methods=['GET'])
 def get_contact():
 
@@ -52,6 +53,59 @@ def get_contact():
 
     return jsonify(response_body), 200
 
+# Creat a new cotact
+@app.route('/contact', methods=['POST'])
+def creat_contact():
+    
+    id = request.json.get('id')
+    name = request.json.get('full_name')
+    email = request.json.get('email')
+    address = request.json.get('address')
+    phone = request.json.get('phone')
+    groups = request.json.get('groups')
+
+    data = request.get_json()
+    id = data['id']
+    name = data['full_name']    
+    email = data['email']
+    address = data['address']   
+    phone = data['phone']
+    groups = data['groups']
+    
+   
+    contact = Contact()
+    contact.id= id
+    contact.full_name = name
+    contact.email = email
+    contact.address = address
+    contact.phone = phone
+    contact.groups = groups
+
+
+    # db.session.add(contact)   
+    # db.session.commit()
+    print(contact)
+
+    return jsonify(contact.serialize()), 201
+
+# @app.route('/contacts', methods=['POST'])
+# def create_contact():    
+#     name = request.json.get('name')    
+#     email = request.json.get('email')    
+#     phone = request.json.get('phone')
+#     data = request.get_json()    
+#     name = data['name']    
+#     email = data['email']    
+#     phone = data['phone']
+#     contact = Contact()    
+#     ontact.name = name    
+#     contact.email = email    
+#     contact.phone = phone
+#     db.session.add(contact)    
+#     db.session.commit()
+#     return jsonify(contact.serialize()), 201
+
+# Get all groups
 @app.route('/group', methods=['GET'])
 def get_group():
 

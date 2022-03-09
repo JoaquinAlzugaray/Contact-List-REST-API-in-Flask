@@ -44,6 +44,7 @@ class Contact(db.Model):
             "phone": self.phone
             # do not serialize the password, its a security breach
         }
+    
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
